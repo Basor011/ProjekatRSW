@@ -1,4 +1,4 @@
-package org.kalinajug.studsluzba_server.model;
+package org.kalinajug.projekat_rsw.model.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
