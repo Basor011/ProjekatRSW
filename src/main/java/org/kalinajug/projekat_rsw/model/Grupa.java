@@ -1,9 +1,13 @@
-package org.kalinajug.projekat_rsw.model.models;
+package org.kalinajug.projekat_rsw.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
+@Getter
+@Setter
 @Entity
 public class Grupa {
     @Id
@@ -12,9 +16,9 @@ public class Grupa {
 
     private int brojGrupe;
 
-    @OneToMany(mappedBy = "zadatakZaIzradu")
+    @OneToMany(mappedBy = "grupa")
     private List<ZadatakZaIzradu> zadaciZaIzradu;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Termin termin;
 }

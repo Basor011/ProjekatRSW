@@ -1,18 +1,22 @@
-package org.kalinajug.projekat_rsw.model.models;
+package org.kalinajug.projekat_rsw.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
+@Getter
+@Setter
 @Entity
 public class Nastavnik extends Korisnik {
-    @OneToMany
+    @OneToMany(mappedBy = "nastavnik")
     private List<ZadatakZaIzradu> zadaciZaIzradu;
 
-    @OneToMany
+    @OneToMany(mappedBy = "nastavnik")
     private List<Komentar> komentari;
 
-    @OneToMany
+    @OneToMany(mappedBy = "nastavnik")
     private List<Poeni> poeni;
 }

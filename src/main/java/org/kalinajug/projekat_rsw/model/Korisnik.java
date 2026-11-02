@@ -1,8 +1,9 @@
-package org.kalinajug.projekat_rsw.model.models;
+package org.kalinajug.projekat_rsw.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
 
+@Inheritance(strategy = InheritanceType.JOINED)
 @Entity
 @Data
 public abstract class Korisnik {
