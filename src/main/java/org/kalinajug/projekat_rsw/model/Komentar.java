@@ -13,9 +13,10 @@ public class Komentar {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String path;
     private Integer pocetniRed;
-    private Integer krajnjiRed ;
+    private Integer krajnjiRed;
     private String komentar;           // u formatu pocetna linija, poslednja linija
 
     @ManyToOne(fetch = FetchType.LAZY)
