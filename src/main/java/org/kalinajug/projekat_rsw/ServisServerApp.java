@@ -1,4 +1,4 @@
-package org.kalinajug.projekat_rsw.utils;
+package org.kalinajug.projekat_rsw;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

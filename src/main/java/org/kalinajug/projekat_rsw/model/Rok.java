@@ -18,7 +18,7 @@ public class Rok {
     @Enumerated(EnumType.STRING)
     private TipRoka tipRoka;
 
-    @OneToMany(mappedBy = "ispitniRok")
+    @OneToMany(mappedBy = "rok")
     private List<Termin> termini;
 
     @ManyToOne(fetch = FetchType.LAZY)

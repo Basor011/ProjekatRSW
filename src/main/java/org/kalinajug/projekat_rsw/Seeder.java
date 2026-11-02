@@ -1,9 +1,11 @@
-package org.kalinajug.projekat_rsw.utils;
+package org.kalinajug.projekat_rsw;
 
 import lombok.RequiredArgsConstructor;
 import org.kalinajug.projekat_rsw.model.*;
 import org.kalinajug.projekat_rsw.repositories.*;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.env.Environment;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -24,6 +26,9 @@ public class Seeder implements CommandLineRunner {
     private final StudentRepo studentRepo;
     private final TerminRepo terminRepo;
     private final ZadatakZaIzraduRepo zadatakZaIzraduRepo;
+
+    private final PasswordEncoder passwordEncoder;
+    private final Environment env;
 
 
     @Override

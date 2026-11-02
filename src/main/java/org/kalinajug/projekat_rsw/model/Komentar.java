@@ -13,8 +13,9 @@ public class Komentar {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String path; // put do klase za koju ostavlja komtenar
-    private Pair<Integer,Integer> row; // za koju liniju ili linije ostavlja komentar,
+    private String path;
+    private Integer pocetniRed;
+    private Integer krajnjiRed ;
     private String komentar;           // u formatu pocetna linija, poslednja linija
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -9,6 +9,7 @@ import java.util.List;
 
 @Data
 @Getter
+@Entity
 public class Termin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
