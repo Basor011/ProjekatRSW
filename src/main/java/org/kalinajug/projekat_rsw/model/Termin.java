@@ -1,15 +1,15 @@
 package org.kalinajug.projekat_rsw.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Data
 @Getter
-@Setter
-@Entity
 public class Termin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

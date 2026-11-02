@@ -4,8 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 @Inheritance(strategy = InheritanceType.JOINED)
-@Entity
 @Data
+@Entity
 public abstract class Korisnik {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
