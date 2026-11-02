@@ -2,14 +2,12 @@ package org.kalinajug.projekat_rsw.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.List;
 
 @Data
 @Entity
-public class IspitniRok {
+public class Rok {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,6 +15,7 @@ public class IspitniRok {
     @Column(nullable = false)
     private String naziv;
 
+    @Enumerated(EnumType.STRING)
     private TipRoka tipRoka;
 
     @OneToMany(mappedBy = "ispitniRok")

@@ -2,8 +2,6 @@ package org.kalinajug.projekat_rsw.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.List;
 
@@ -18,5 +16,5 @@ public class Predmet {
     private String naziv;
 
     @OneToMany(mappedBy = "predmet")
-    private List<IspitniRok> ispitniRokovi;
+    private List<Rok> rokovi;
 }

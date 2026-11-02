@@ -8,15 +8,12 @@ import lombok.Setter;
 
 import java.util.List;
 
-@Data
+
 @Entity
+@Getter
+@Setter
 public class Nastavnik extends Korisnik {
     @OneToMany(mappedBy = "nastavnik")
     private List<ZadatakZaIzradu> zadaciZaIzradu;
 
-    @OneToMany(mappedBy = "nastavnik")
-    private List<Komentar> komentari;
-
-    @OneToMany(mappedBy = "nastavnik")
-    private List<Poeni> poeni;
 }

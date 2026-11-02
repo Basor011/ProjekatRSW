@@ -20,4 +20,5 @@ public class Student extends Korisnik {
 
     @OneToMany(mappedBy = "student")
     private List<ListaPrijavljenih> listePrijavljenih;
+
 }

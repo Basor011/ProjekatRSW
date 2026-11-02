@@ -20,9 +20,6 @@ public class PredatiZadatak {
     @ManyToOne(fetch = FetchType.LAZY)
     private Student student;
 
-    @OneToOne(mappedBy = "predatiZadatak")
-    private Poeni poeni;
-
     @ManyToOne(fetch = FetchType.LAZY)
     private ZadatakZaIzradu zadatakZaIzradu;
 
