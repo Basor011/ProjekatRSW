@@ -55,13 +55,13 @@ public class Seeder implements CommandLineRunner {
         }
 
         List<Termin> terminList = new ArrayList<>();
-        LocalDateTime terminT  = LocalDateTime.now();
+        LocalDateTime terminT  = LocalDateTime.now().plusDays(1);
         for(int i=0; i < rokList.size();i++)
         {
             Termin t = new Termin();
             t.setRok(rokList.get(i));
-            t.setKraj(terminT.plusDays(i).withHour(9));
-            t.setPocetak(terminT.plusDays(i).withHour(12));
+            t.setKraj(terminT.plusDays(i).withHour(12));
+            t.setPocetak(terminT.plusDays(i).withHour(9));
             terminList.add(terminRepo.save(t));
         }
 
@@ -69,7 +69,7 @@ public class Seeder implements CommandLineRunner {
         for (int i = 1; i < terminList.size(); i++) {
             Grupa gp = new Grupa();
             gp.setBrojGrupe(i+100);
-            gp.setTermin(terminList.get(i-1));
+            gp.setTermin(terminList.get(i));
             gpList.add(grupaRepo.save(gp));
         }
 
