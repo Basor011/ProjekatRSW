@@ -139,5 +139,6 @@ public class Seeder implements CommandLineRunner {
             k.setPredatiZadatak(predatiZadatakList.get(i));
             komentarList.add(komentarRepo.save(k));
         }
+
     }
 }
