@@ -8,6 +8,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,120 +36,108 @@ public class Seeder implements CommandLineRunner {
 
         if(rokRepo.count()>0) return; //// DODAJ ATRIBUTE U FOROVE
 
+        List<Predmet> predmetList= new ArrayList<>();
+        for(int i=0; i <= 5;i++)
+        {
+            Predmet p = new Predmet();
+            p.setNaziv("predmet " + i);
+            predmetList.add(predmetRepo.save(p));
+        }
+
+        List<Rok> rokList = new ArrayList<>();
+        for(int i=0; i < predmetList.size();i++)
+        {
+            Rok r = new Rok();
+            r.setNaziv("rok " + i);
+            r.setPredmet(predmetList.get(i));
+            r.setTipRoka(i%2==0 ? TipRoka.KOLOKVIJUM : TipRoka.ISPIT);
+            rokList.add(rokRepo.save(r));
+        }
+
+        List<Termin> terminList = new ArrayList<>();
+        LocalDateTime terminT  = LocalDateTime.now();
+        for(int i=0; i < rokList.size();i++)
+        {
+            Termin t = new Termin();
+            t.setRok(rokList.get(i));
+            t.setKraj(terminT.plusDays(i).withHour(9));
+            t.setPocetak(terminT.plusDays(i).withHour(12));
+            terminList.add(terminRepo.save(t));
+        }
+
         List<Grupa> gpList = new ArrayList<>();
-        for (int i = 1; i <= 5; i++) {
+        for (int i = 1; i < terminList.size(); i++) {
             Grupa gp = new Grupa();
             gp.setBrojGrupe(i+100);
-            // gp.setTermin(); za termin pogledaj kasnije posto treba da se prosledi
-            // gp.setZadaciZaIzradu();
-            gpList.add(gp);
+            gp.setTermin(terminList.get(i-1));
+            gpList.add(grupaRepo.save(gp));
         }
-        grupaRepo.saveAll(gpList);
+
+        String enkodovanaLozinka = passwordEncoder.encode("lozinka123");
+
+        List<Nastavnik> nastavnikList= new ArrayList<>();
+        for(int i=0; i<=5 ;i++)
+        {
+            Nastavnik n = new Nastavnik();
+            n.setEmail("nastavnik" + i + "@gmail.com");
+            n.setIme("Nastavnik");
+            n.setPrezime("Nastavnikovic" + i);
+            n.setLozinka(enkodovanaLozinka);
+            nastavnikList.add(nastavnikRepo.save(n));
+        }
+
+        List<ZadatakZaIzradu> zadatakZaIzraduList= new ArrayList<>();
+        for(int i=0; i < nastavnikList.size() && i < gpList.size();i++)
+        {
+            ZadatakZaIzradu z = new ZadatakZaIzradu();
+            z.setGrupa(gpList.get(i));
+            z.setNastavnik(nastavnikList.get(i));
+            zadatakZaIzraduList.add(zadatakZaIzraduRepo.save(z));
+        }
+
+        List<Student> studentList = new ArrayList<>();
+        for(int i=0; i<=5 ;i++)
+        {
+            Student s = new Student();
+            s.setEmail("student" + i + "@gmail.com");
+            s.setIme("Student");
+            s.setSmer(i%2==0 ? "SI" : "RN");
+            s.setGodinaUpisa(2020 + i);
+            s.setBrIndeksa(i);
+            s.setPrezime("Studenkovic" + i);
+            s.setLozinka(enkodovanaLozinka);
+            studentList.add(studentRepo.save(s));
+        }
+
+        List<ListaPrijavljenih> listePrijavljenih = new ArrayList<>();
+        for(int i=0; i<terminList.size() && i < studentList.size();i++)
+        {
+            ListaPrijavljenih lp = new ListaPrijavljenih();
+            lp.setStudent(studentList.get(i));
+            lp.setTermin(terminList.get(i));
+            listePrijavljenih.add(listaPrijavljenihRepo.save(lp));
+        }
+
+        List<PredatiZadatak> predatiZadatakList = new ArrayList<>();
+        for(int i=0;i<zadatakZaIzraduList.size() && i < studentList.size();i++)
+        {
+            PredatiZadatak p = new PredatiZadatak();
+            p.setPoeni((i + 100) /2);
+            p.setStudent(studentList.get(i));
+            p.setZadatakZaIzradu(zadatakZaIzraduList.get(i));
+            predatiZadatakList.add(predatiZadatakRepo.save(p));
+        }
 
         List<Komentar> komentarList = new ArrayList<>();
-        for(int i=0;i<=5;i++)
+        for(int i=0;i<predatiZadatakList.size();i++)
         {
             Komentar k = new Komentar();
             k.setKomentar("komentar " + i);
             k.setPath("/komentarpath " + i);
             k.setPocetniRed(i);
             k.setKrajnjiRed(i+i);
-            komentarList.add(k);
+            k.setPredatiZadatak(predatiZadatakList.get(i));
+            komentarList.add(komentarRepo.save(k));
         }
-        komentarRepo.saveAll(komentarList);
-
-        List<ListaPrijavljenih> listePrijavljenih = new ArrayList<>();
-        for(int i=0;i<=5;i++)
-        {
-            ListaPrijavljenih lp = new ListaPrijavljenih();
-            // lp.setStudent();
-            // lp.setTermin();
-            listePrijavljenih.add(lp);
-        }
-        listaPrijavljenihRepo.saveAll(listePrijavljenih);
-
-        List<Nastavnik> nastavnikList= new ArrayList<>();
-        for(int i=0;i<=5;i++)
-        {
-            Nastavnik n = new Nastavnik();
-            n.setEmail("nastavnik" + i + "@gmail.com");
-            n.setIme("nastavnik" + i);
-            //n.setZadaciZaIzradu();
-            nastavnikList.add(n);
-        }
-        nastavnikRepo.saveAll(nastavnikList);
-
-        List<PredatiZadatak> predatiZadatakList = new ArrayList<>();
-        for(int i=0;i<=5;i++)
-        {
-            PredatiZadatak p = new PredatiZadatak();
-            //p.setKomentari();
-            p.setPoeni((i*2 + 100) /2);
-            //p.setStudent();
-            //p.setZadatakZaIzradu();
-            predatiZadatakList.add(p);
-        }
-        predatiZadatakRepo.saveAll(predatiZadatakList);
-
-        List<Predmet> predmetList= new ArrayList<>();
-        for(int i=0;i<=5;i++)
-        {
-            Predmet p = new Predmet();
-            p.setNaziv("predmet " + i);
-            //p.setRokovi();
-            predmetList.add(p);
-        }
-        predmetRepo.saveAll(predmetList);
-
-        List<Rok> rokList = new ArrayList<>();
-        for(int i=0;i<=5;i++)
-        {
-            Rok r = new Rok();
-            r.setNaziv("rok " + i);
-            //r.setTermini();
-            //r.setPredmet();
-            //r.setTipRoka();
-            rokList.add(r);
-        }
-        rokRepo.saveAll(rokList);
-
-        List<Student> studentList = new ArrayList<>();
-        for(int i=0;i<=5;i++)
-        {
-            Student s = new Student();
-            s.setEmail("student" + i + "@gmail.com");
-            s.setIme("student" + i);
-            s.setSmer("SI");
-            s.setGodinaUpisa(202 + i);
-            s.setBrIndeksa(i);
-            s.setPrezime("studenkovic");
-            //s.setListePrijavljenih();
-            studentList.add(s);
-        }
-        studentRepo.saveAll(studentList);
-
-        List<Termin> terminList = new ArrayList<>();
-        for(int i=0;i<=5;i++)
-        {
-            Termin t = new Termin();
-            //t.setGrupe();
-            //t.setRok();
-            //t.setKraj(); zab kako
-            //t.setPocetak(); zab
-            //t.setListePrijavljenih();
-            terminList.add(t);
-        }
-        terminRepo.saveAll(terminList);
-
-        List<ZadatakZaIzradu> zadatakZaIzraduList= new ArrayList<>();
-        for(int i=0;i<=5;i++)
-        {
-            ZadatakZaIzradu z = new ZadatakZaIzradu();
-            //z.setGrupa();
-            //z.setNastavnik();
-            //z.setPredatiZadaci();
-            zadatakZaIzraduList.add(z);
-        }
-        zadatakZaIzraduRepo.saveAll(zadatakZaIzraduList);
     }
 }
