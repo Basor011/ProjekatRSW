@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface GrupaRepo extends JpaRepository<Grupa, Long> {
 
-  @Query("select g.zadaciZaIzradu from Grupa g where g.id= :grupaId")
+  @Query("select g.zadaciZaIzradu from Grupa g where g.groupid= :grupaId")
   List<ZadatakZaIzradu> getZadaciOdGrupe(@Param("grupaId") Long grupaId);
 
 

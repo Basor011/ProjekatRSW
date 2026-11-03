@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 public class Student extends Korisnik {
-    private String brIndeksa;
+    private Integer brIndeksa;
     private String smer;
     private Integer godinaUpisa;
 

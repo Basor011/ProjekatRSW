@@ -10,10 +10,10 @@ import java.util.List;
 
 public interface NastavnikRepo extends JpaRepository<Nastavnik, Long> {
 
-    @Query("select n from Nastavnik n where n.id= :nastavnikId")
+    @Query("select n from Nastavnik n where n.korisnikid= :nastavnikId")
     List<Nastavnik> getNastavnikById(@Param("nastavnikId")Long nastavnikId);
 
-    @Query("select n.zadaciZaIzradu from Nastavnik n where n.id =:nastavnikId")
+    @Query("select n.zadaciZaIzradu from Nastavnik n where n.korisnikid =:nastavnikId")
     List<ZadatakZaIzradu> getNastavnikZadaciZaIzradu(@Param("nastavnikId")Long nastavnikId);
 
 }

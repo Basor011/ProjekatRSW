@@ -2,6 +2,7 @@ package org.kalinajug.projekat_rsw.model;
 
 import ch.qos.logback.core.joran.sanity.Pair;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +12,8 @@ import lombok.Setter;
 public class Komentar {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Setter(AccessLevel.NONE)
+    private Long komentarid;
 
     @Column(nullable = false)
     private String path;

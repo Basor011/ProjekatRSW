@@ -1,7 +1,9 @@
 package org.kalinajug.projekat_rsw.model;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Setter;
 
 import java.util.List;
 
@@ -10,7 +12,8 @@ import java.util.List;
 public class Rok {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Setter(AccessLevel.NONE)
+    private Long rokid;
 
     @Column(nullable = false)
     private String naziv;

@@ -8,7 +8,6 @@ import lombok.Setter;
 
 import java.util.List;
 
-
 @Data
 @Entity
 public class Nastavnik extends Korisnik {

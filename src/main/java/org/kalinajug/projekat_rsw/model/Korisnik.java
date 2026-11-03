@@ -1,7 +1,9 @@
 package org.kalinajug.projekat_rsw.model;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Setter;
 
 @Inheritance(strategy = InheritanceType.JOINED)
 @Data
@@ -9,7 +11,8 @@ import lombok.Data;
 public abstract class Korisnik {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Setter(AccessLevel.NONE)
+    private Long korisnikid;
 
     private String ime;
     private String prezime;
