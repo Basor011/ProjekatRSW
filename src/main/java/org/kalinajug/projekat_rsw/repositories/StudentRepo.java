@@ -13,7 +13,7 @@ import java.util.Optional;
 @Repository
 public interface StudentRepo extends JpaRepository<Student, Long> {
 
-    Optional<Student> findByEmail(String email);
+
 
     @Query("select s from Student s where (:ime is null or lower(s.ime) like lower(concat('%', :ime, '%'))) " +
             "and (:prezime is null or lower(s.prezime) like lower(concat('%', :prezime, '%'))) " +
