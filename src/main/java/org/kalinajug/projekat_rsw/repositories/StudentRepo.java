@@ -5,14 +5,19 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
 
 @Repository
 public interface StudentRepo extends JpaRepository<Student, Long> {
 
-    @Query("select sp from StudentPodaci sp where "
-            + "(:ime is null or lower(sp.ime) like lower(concat('%', :ime, '%'))) and "
-            + "(:prezime is null or lower(sp.prezime) like lower(concat('%', :prezime, '%'))) and "
-            + "not exists (select indeks from StudentIndeks indeks where indeks.student = sp)")
-    Page<Student> findStudent(String ime, String prezime, Pageable pageable);
+    Optional<Student> findByEmail(String email);
+
+    @Query("select s from Student s where (:ime is null or lower(s.ime) like lower(concat('%', :ime, '%'))) " +
+            "and (:prezime is null or lower(s.prezime) like lower(concat('%', :prezime, '%'))) " +
+            "and s.brIndeksa is null")
+    Page<Student> findStudent(@Param("ime") String ime, @Param("prezime") String prezime, Pageable pageable);
 }
+
