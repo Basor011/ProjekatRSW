@@ -1,33 +1,34 @@
 package org.kalinajug.projekat_rsw.controllers.request;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
-import org.kalinajug.projekat_rsw.model.ListaPrijavljenih;
-import org.kalinajug.projekat_rsw.model.PredatiZadatak;
-
-import java.util.List;
 
 @Data
 public class StudentRequest {
-
-    @NotNull
-    private Long korisnikid;
     @NotBlank
     private String ime;
+
     @NotBlank
     private String prezime;
+
+    @NotBlank
+    @Email
     private String email;
-    @NotNull
-    private Integer brIndeksa;
+
     @NotBlank
-    private String smer;
-    @NotNull
-    private Integer godinaUpisa;
-    @NotBlank
+    @Size(min = 8)
     private String lozinka;
 
+    @NotNull
+    private Integer brIndeksa;
 
-    private List<PredatiZadatak> predatiZadatak;
-    private List<ListaPrijavljenih> listePrijavljenih;
+    @NotBlank
+    private String smer;
+
+    @NotNull
+    private Integer godinaUpisa;
 }
