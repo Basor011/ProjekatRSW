@@ -4,7 +4,9 @@ import org.kalinajug.projekat_rsw.model.ListaPrijavljenih;
 import org.kalinajug.projekat_rsw.model.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface ListaPrijavljenihRepo extends JpaRepository<ListaPrijavljenih, Long> {
 
 
