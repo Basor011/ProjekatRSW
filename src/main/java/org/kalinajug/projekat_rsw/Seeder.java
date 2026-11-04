@@ -86,15 +86,6 @@ public class Seeder implements CommandLineRunner {
             nastavnikList.add(nastavnikRepo.save(n));
         }
 
-        List<ZadatakZaIzradu> zadatakZaIzraduList= new ArrayList<>();
-        for(int i=0; i < nastavnikList.size() && i < gpList.size();i++)
-        {
-            ZadatakZaIzradu z = new ZadatakZaIzradu();
-            z.setGrupa(gpList.get(i));
-            z.setNastavnik(nastavnikList.get(i));
-            zadatakZaIzraduList.add(zadatakZaIzraduRepo.save(z));
-        }
-
         List<Student> studentList = new ArrayList<>();
         for(int i=0; i<=5 ;i++)
         {
@@ -109,6 +100,15 @@ public class Seeder implements CommandLineRunner {
             studentList.add(studentRepo.save(s));
         }
 
+        List<ZadatakZaIzradu> zadatakZaIzraduList= new ArrayList<>();
+        for(int i=0; i < nastavnikList.size() && i < gpList.size();i++)
+        {
+            ZadatakZaIzradu z = new ZadatakZaIzradu();
+            z.setGrupa(gpList.get(i));
+            z.setNastavnik(nastavnikList.get(i));
+            zadatakZaIzraduList.add(zadatakZaIzraduRepo.save(z));
+        }
+
         List<ListaPrijavljenih> listePrijavljenih = new ArrayList<>();
         for(int i=0; i<terminList.size() && i < studentList.size();i++)
         {
@@ -119,12 +119,19 @@ public class Seeder implements CommandLineRunner {
         }
 
         List<PredatiZadatak> predatiZadatakList = new ArrayList<>();
-        for(int i=0;i<zadatakZaIzraduList.size() && i < studentList.size();i++)
+        LocalDateTime sada = LocalDateTime.now().plusDays(1);
+        for(int i=0; i < zadatakZaIzraduList.size() && i < studentList.size(); i++)
         {
             PredatiZadatak p = new PredatiZadatak();
-            p.setPoeni((i + 100) /2);
             p.setStudent(studentList.get(i));
             p.setZadatakZaIzradu(zadatakZaIzraduList.get(i));
+            LocalDateTime preuzeto = sada.minusHours(3).plusMinutes(i);
+            p.setVremePreuzimanja(preuzeto);
+
+            if(i % 2 == 0){
+                p.setVremePredaje(preuzeto.plusMinutes(110 + i));
+                p.setPoeni((i + 90) / 2);
+            }
             predatiZadatakList.add(predatiZadatakRepo.save(p));
         }
 

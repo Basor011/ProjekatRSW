@@ -6,6 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 public interface ListaPrijavljenihRepo extends JpaRepository<ListaPrijavljenih, Long> {
-
-
+    boolean existsByStudentIdAndTerminId(Long studentId, Long terminId);
 }

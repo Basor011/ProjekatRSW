@@ -16,7 +16,7 @@ public class Termin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
-    private Long terminid;
+    private Long id;
 
     private LocalDateTime pocetak;
     private LocalDateTime kraj;

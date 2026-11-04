@@ -13,7 +13,7 @@ public class Rok {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
-    private Long rokid;
+    private Long id;
 
     @Column(nullable = false)
     private String naziv;
