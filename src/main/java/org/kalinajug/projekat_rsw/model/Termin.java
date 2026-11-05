@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-@Getter
 @Entity
 public class Termin {
     @Id

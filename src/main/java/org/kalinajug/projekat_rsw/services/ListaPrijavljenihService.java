@@ -1,8 +1,7 @@
 package org.kalinajug.projekat_rsw.services;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.kalinajug.exceptions.ResourceNotFoundException;
+import org.kalinajug.projekat_rsw.exceptions.ResourceNotFoundException;
 import org.kalinajug.projekat_rsw.model.ListaPrijavljenih;
 import org.kalinajug.projekat_rsw.model.Student;
 import org.kalinajug.projekat_rsw.model.Termin;
@@ -10,6 +9,7 @@ import org.kalinajug.projekat_rsw.repositories.ListaPrijavljenihRepo;
 import org.kalinajug.projekat_rsw.repositories.StudentRepo;
 import org.kalinajug.projekat_rsw.repositories.TerminRepo;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,8 +1,8 @@
 package org.kalinajug.projekat_rsw.services;
 
 import lombok.RequiredArgsConstructor;
-import org.kalinajug.exceptions.ConflictException;
-import org.kalinajug.exceptions.ResourceNotFoundException;
+import org.kalinajug.projekat_rsw.exceptions.ConflictException;
+import org.kalinajug.projekat_rsw.exceptions.ResourceNotFoundException;
 import org.kalinajug.projekat_rsw.model.Grupa;
 import org.kalinajug.projekat_rsw.model.Nastavnik;
 import org.kalinajug.projekat_rsw.model.ZadatakZaIzradu;
@@ -12,7 +12,6 @@ import org.kalinajug.projekat_rsw.repositories.PredatiZadatakRepo;
 import org.kalinajug.projekat_rsw.repositories.ZadatakZaIzraduRepo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Service
 @RequiredArgsConstructor

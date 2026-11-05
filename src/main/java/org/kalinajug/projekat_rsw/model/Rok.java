@@ -19,6 +19,7 @@ public class Rok {
     private String naziv;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private TipRoka tipRoka;
 
     @OneToMany(mappedBy = "rok")
@@ -27,7 +28,7 @@ public class Rok {
     @ManyToOne(fetch = FetchType.LAZY)
     private Predmet predmet;
 
-    public boolean isStudentPrijavljen(){
+    public boolean isIspit(){
         return tipRoka == TipRoka.ISPIT;
     }
 }
