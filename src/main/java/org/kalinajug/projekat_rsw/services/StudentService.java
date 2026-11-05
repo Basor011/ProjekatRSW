@@ -34,8 +34,6 @@ public class StudentService {
         return studentRepo.findById(id);
     }
 
-    public Page<Student> searchBezIndeksa(String ime, String prezime, int page, int size) {
-        return studentRepo.findStudent(ime, prezime, PageRequest.of(page, size, Sort.by("id").descending()));
-    }
+
 
 }
