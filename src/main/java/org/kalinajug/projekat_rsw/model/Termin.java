@@ -17,10 +17,12 @@ public class Termin {
     @Setter(AccessLevel.NONE)
     private Long id;
 
+    @Column(nullable = false)
     private LocalDateTime pocetak;
+    @Column(nullable = false)
     private LocalDateTime kraj;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Rok rok;
 
     @OneToMany(mappedBy = "termin")
