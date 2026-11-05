@@ -1,24 +1,23 @@
 package org.kalinajug.projekat_rsw.controllers.request;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
-import org.kalinajug.projekat_rsw.model.ZadatakZaIzradu;
 
-import java.util.List;
 @Data
 public class NastavnikRequest {
-
-
-    @NotNull
-    private Long korisnikid;
     @NotBlank
     private String ime;
+
     @NotBlank
     private String prezime;
+
     @NotBlank
+    @Email
     private String email;
+
     @NotBlank
+    @Size(min = 8)
     private String lozinka;
-    private List<ZadatakZaIzradu> zadaciZaIzradu;
 }
