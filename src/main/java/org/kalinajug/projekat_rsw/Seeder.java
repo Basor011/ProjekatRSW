@@ -139,7 +139,7 @@ public class Seeder implements CommandLineRunner {
         for(int i=0;i<predatiZadatakList.size();i++)
         {
             Komentar k = new Komentar();
-            k.setKomentar("komentar " + i);
+            k.setTekst("komentar " + i);
             k.setPath("/komentarpath " + i);
             k.setPocetniRed(i);
             k.setKrajnjiRed(i+i);

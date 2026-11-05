@@ -20,7 +20,7 @@ public class PredatiZadatak {
     @OneToMany(mappedBy = "predatiZadatak")
     private List<Komentar> komentari;
 
-    private Integer poeni;
+    private double poeni;
 
     private LocalDateTime vremePreuzimanja;
     private LocalDateTime vremePredaje; //null dok student ne preda

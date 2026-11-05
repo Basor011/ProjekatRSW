@@ -17,7 +17,7 @@ public class Komentar {
     private String path;
     private Integer pocetniRed;
     private Integer krajnjiRed;
-    private String komentar;           // u formatu pocetna linija, poslednja linija
+    private String tekst;           // u formatu pocetna linija, poslednja linija
 
     @ManyToOne(fetch = FetchType.LAZY)
     private PredatiZadatak predatiZadatak;
