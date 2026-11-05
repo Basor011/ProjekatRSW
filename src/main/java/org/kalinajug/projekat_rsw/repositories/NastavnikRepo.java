@@ -12,10 +12,10 @@ import java.util.List;
 @Repository
 public interface NastavnikRepo extends JpaRepository<Nastavnik, Long> {
 
-    @Query("select n from Nastavnik n where n.korisnikid= :nastavnikId")
+    @Query("select n from Nastavnik n where n.id= :nastavnikId")
     List<Nastavnik> getNastavnikById(@Param("nastavnikId")Long nastavnikId);
 
-    @Query("select n.zadaciZaIzradu from Nastavnik n where n.korisnikid =:nastavnikId")
+    @Query("select n.zadaciZaIzradu from Nastavnik n where n.id =:nastavnikId")
     List<ZadatakZaIzradu> getNastavnikZadaciZaIzradu(@Param("nastavnikId")Long nastavnikId);
 
     @Query("select sp from Nastavnik sp where "

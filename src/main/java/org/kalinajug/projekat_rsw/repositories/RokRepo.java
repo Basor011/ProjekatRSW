@@ -16,5 +16,7 @@ public interface RokRepo extends JpaRepository<Rok, Long> {
     @Query("select r from Rok r where r.tipRoka = :tipRoka")
     List<Rok> getRokByTipRoka(@Param("tipRoka") TipRoka tipRoka);
 
+    List<Rok> findByPredmetId(Long predmetId);
+    List<Rok> findByTipRoka(TipRoka tipRoka);
 
 }

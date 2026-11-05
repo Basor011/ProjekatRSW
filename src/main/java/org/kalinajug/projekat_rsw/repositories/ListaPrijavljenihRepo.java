@@ -8,6 +8,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ListaPrijavljenihRepo extends JpaRepository<ListaPrijavljenih, Long> {
-
-
+    boolean existsByStudentIdAndTerminId(Long studentId, Long terminId);
 }

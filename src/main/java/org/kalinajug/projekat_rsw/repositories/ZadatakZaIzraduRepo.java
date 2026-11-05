@@ -7,6 +7,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ZadatakZaIzraduRepo extends JpaRepository<ZadatakZaIzradu, Long> {
-
-
 }

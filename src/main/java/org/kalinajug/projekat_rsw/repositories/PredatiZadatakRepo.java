@@ -6,6 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PredatiZadatakRepo extends JpaRepository<PredatiZadatak, Long> {
-
-
+    boolean existsByZadatakZaIzraduId(Long id);
 }
