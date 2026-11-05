@@ -1,6 +1,6 @@
 package org.kalinajug.projekat_rsw.services;
 
-import jakarta.transaction.Transactional;
+
 import lombok.RequiredArgsConstructor;
 import org.kalinajug.projekat_rsw.exceptions.BadRequestException;
 import org.kalinajug.projekat_rsw.exceptions.ConflictException;
@@ -11,6 +11,7 @@ import org.kalinajug.projekat_rsw.repositories.KorisnikRepo;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
