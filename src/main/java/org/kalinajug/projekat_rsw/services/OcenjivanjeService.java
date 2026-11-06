@@ -31,7 +31,8 @@ public class OcenjivanjeService {
         Komentar k = new Komentar();
         k.setPredatiZadatak(predatiZadatak);
         k.setPath(path);
-        k.setPocetniRed(krajnjiRed);
+        k.setPocetniRed(pocetniRed);
+        k.setKrajnjiRed(krajnjiRed);
         k.setTekst(tekst);
         return komentarRepo.save(k);
     }
