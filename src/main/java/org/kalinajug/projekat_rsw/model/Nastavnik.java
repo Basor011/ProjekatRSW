@@ -13,4 +13,9 @@ import java.util.List;
 public class Nastavnik extends Korisnik {
     @OneToMany(mappedBy = "nastavnik")
     private List<ZadatakZaIzradu> zadaciZaIzradu;
+
+    @Override
+    public TipKorisnika getTipKorisnika() {
+        return TipKorisnika.NASTAVNIK;
+    }
 }

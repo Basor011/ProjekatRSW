@@ -17,9 +17,13 @@ public abstract class Korisnik {
     private String ime;
     private String prezime;
 
+    //private TipKorisnika tipKorisnika;
+
     @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)
     private String lozinka;
+
+    public abstract TipKorisnika getTipKorisnika();
 }
