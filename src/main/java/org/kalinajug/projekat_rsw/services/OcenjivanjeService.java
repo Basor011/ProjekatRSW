@@ -37,7 +37,7 @@ public class OcenjivanjeService {
     }
 
     @Transactional
-    public PredatiZadatak dodajPoene(Long predatiId, Double poeni) {
+    public PredatiZadatak savePoene(Long predatiId, Double poeni) {
         if (poeni == null || poeni < 0) {
             throw new BadRequestException("Poeni ne mogu biti negativni");
         }
@@ -47,7 +47,7 @@ public class OcenjivanjeService {
     }
 
     @Transactional(readOnly = true)
-    public List<Komentar> getKomentariZaNastavnika(Long predatiId) {
+    public List<Komentar> findKomentarByPredatiZadatakId(Long predatiId) {
         if(!predatiZadatakRepo.existsById(predatiId)) {
             throw new ResourceNotFoundException("Predati zadatak sa id " + predatiId + " ne postoji.");
         }
@@ -55,13 +55,13 @@ public class OcenjivanjeService {
     }
 
     @Transactional(readOnly = true)
-    public List<Komentar> getKomentariZaStudenta(Long predatiId, Long studentId) {
+    public List<Komentar> findKomentarByStudentAndZadatak(Long predatiId, Long studentId) {
         predatiZadatakRepo.findByIdAndStudentId(predatiId, studentId).orElseThrow(() -> new ResourceNotFoundException("Resenje ne postoji"));
         return komentarRepo.findByPredatiZadatakId(predatiId);
     }
 
     @Transactional
-    public void obrisiKomentar(Long komentarId) {
+    public void deleteKomentar(Long komentarId) {
         if (!komentarRepo.existsById(komentarId))
             throw new ResourceNotFoundException("Komentar ne postoji");
         komentarRepo.deleteById(komentarId);
