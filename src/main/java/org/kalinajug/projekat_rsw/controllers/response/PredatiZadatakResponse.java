@@ -7,7 +7,7 @@ import java.util.List;
 @Data
 public class PredatiZadatakResponse {
     private Long id;
-    private Integer poeni;
+    private Double poeni;
     private Long studentId;
     private Long zadatakZaIzraduId;
     private List<KomentarResponse> komentari;

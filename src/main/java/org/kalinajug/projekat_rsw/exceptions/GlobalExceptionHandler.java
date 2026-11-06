@@ -1,11 +1,16 @@
 package org.kalinajug.projekat_rsw.exceptions;
 
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ProblemDetail;
+import org.springframework.http.*;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
@@ -34,7 +39,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, "Narusen integritet podataka (duplikat ili postojeca veza)");
     }
 
-   /*
+    // dodaje spisak polja koja nisu prosla @Valid, npr. "errors": {"ime": "must not be blank"}
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers,
                                                                   HttpStatusCode status, WebRequest request) {
@@ -46,5 +51,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         body.setDetail("Neispravni podaci u zahtevu");
         body.setProperty("errors", errors);
         return handleExceptionInternal(ex, body, headers, status, request);
-    }*/
+    }
+
 }

@@ -44,7 +44,7 @@ public class Seeder implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        if(rokRepo.count()>0) return; //// DODAJ ATRIBUTE U FOROVE
+        if(rokRepo.count()>0) return;
 
         List<Predmet> predmetList= new ArrayList<>();
         for(int i=0; i <= 5;i++)

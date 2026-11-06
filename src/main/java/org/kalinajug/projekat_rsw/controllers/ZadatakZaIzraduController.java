@@ -18,9 +18,9 @@ public class ZadatakZaIzraduController {
     private final ZadatakZaIzraduService zadatakZaIzraduService;
 
     @PostMapping("/add")
-    public ResponseEntity<ZadatakZaIzraduResponse> addNewZadatakZaIzradu(@RequestBody @Valid ZadatakZaIzraduRequest zadatakZaIzraduRequest)
+    public ResponseEntity<ZadatakZaIzraduResponse> addNewZadatakZaIzradu(@RequestBody @Valid ZadatakZaIzraduRequest zziRequest)
     {
-        ZadatakZaIzradu zadatakZaIzradu= zadatakZaIzraduService.save(zadatakZaIzraduRequest.getGrupaId(),zadatakZaIzraduRequest.getNastavnikId());
+        ZadatakZaIzradu zadatakZaIzradu= zadatakZaIzraduService.save(zziRequest.getGrupaId(), zziRequest.getNastavnikId(), zziRequest.g);
 
         ZadatakZaIzraduResponse zadatakZaIzraduResponse= Converters.toZadatakZaIzraduResponse(zadatakZaIzradu);
         return ResponseEntity.status(HttpStatus.CREATED).body(zadatakZaIzraduResponse);

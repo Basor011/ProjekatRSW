@@ -1,5 +1,6 @@
 package org.kalinajug.projekat_rsw.exceptions;
 
-public class UnauthorizedException extends RuntimeException {
-    public UnauthorizedException(String poruka) {super  (poruka);}
+
+public class UnAuthorizedException extends RuntimeException {
+    public UnAuthorizedException(String poruka) {super  (poruka);}
 }

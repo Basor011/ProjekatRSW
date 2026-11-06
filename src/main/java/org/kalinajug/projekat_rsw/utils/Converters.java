@@ -204,8 +204,12 @@ public final class Converters {
 
     public static ZadatakZaIzradu toZadatakZaIzradu(ZadatakZaIzraduRequest r, Nastavnik nastavnik, Grupa grupa) {
         ZadatakZaIzradu z = new ZadatakZaIzradu();
-        z.setGrupa(grupa);
+        z.setNaziv(r.getNaziv());
+        z.setOriginalniNaziv(r.getOriginalniNaziv());
+        z.setOpis(z.getOpis());
+        z.setZadatakPath(r.getZadatakPath());
         z.setNastavnik(nastavnik);
+        z.setGrupa(grupa);
         return z;
     }
 
@@ -248,7 +252,7 @@ public final class Converters {
         k.setPath(r.getPath());
         k.setPocetniRed(r.getPocetniRed());
         k.setKrajnjiRed(r.getKrajnjiRed());
-        k.setKomentar(r.getKomentar());
+        k.setTekst(r.getKomentar());
         k.setPredatiZadatak(predatiZadatak);
         return k;
     }
@@ -257,7 +261,7 @@ public final class Converters {
         k.setPath(r.getPath());
         k.setPocetniRed(r.getPocetniRed());
         k.setKrajnjiRed(r.getKrajnjiRed());
-        k.setKomentar(r.getKomentar());
+        k.setTekst(r.getKomentar());
     }
 
     public static KomentarResponse toKomentarResponse(Komentar k) {
@@ -266,7 +270,7 @@ public final class Converters {
         res.setPath(k.getPath());
         res.setPocetniRed(k.getPocetniRed());
         res.setKrajnjiRed(k.getKrajnjiRed());
-        res.setKomentar(k.getKomentar());
+        res.setKomentar(k.getTekst());
         res.setPredatiZadatakId(k.getPredatiZadatak().getId());
         return res;
     }
