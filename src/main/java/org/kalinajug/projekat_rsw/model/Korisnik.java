@@ -22,4 +22,6 @@ public abstract class Korisnik {
 
     @Column(nullable = false)
     private String lozinka;
+
+    public abstract TipKorisnika getTipKorisnika();
 }

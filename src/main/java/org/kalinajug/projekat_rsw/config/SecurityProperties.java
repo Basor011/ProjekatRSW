@@ -7,7 +7,7 @@ import java.util.List;
 
 @ConfigurationProperties(prefix = "app.security")
 public record SecurityProperties(
-        String jwtSecret,             // HMAC kljuc, najmanje 32 bajta
-        Duration jwtTrajanje,         // koliko vazi izdati token
-        List<String> corsOrigins) {   // dozvoljeni origin-i za browser klijente
+        String jwtSecret,
+        Duration jwtTrajanje,
+        List<String> corsOrigins) {
 }

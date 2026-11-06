@@ -20,11 +20,13 @@ public class PredatiZadatak {
     @OneToMany(mappedBy = "predatiZadatak")
     private List<Komentar> komentari;
 
-    private Integer poeni;
+    private Double poeni;
 
     private LocalDateTime vremePreuzimanja;
     private LocalDateTime vremePredaje; //null dok student ne preda
     //vremeIzrade = vremePredaje - vremePreuzimanja
+
+    private String resenjePath;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Student student;

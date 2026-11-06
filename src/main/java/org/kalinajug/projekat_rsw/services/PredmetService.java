@@ -25,7 +25,7 @@ public class PredmetService {
         return predmetRepo.save(predmet);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Predmet> findAll(){
         return predmetRepo.findAll();
     }
@@ -34,6 +34,6 @@ public class PredmetService {
     public void deleteById(Long id){
         if (!predmetRepo.existsById(id))
             throw new ResourceNotFoundException("Ne postoji predmet sa id: " + id);
-        predmetRepo.deleteById(id);;
+        predmetRepo.deleteById(id);
     }
 }

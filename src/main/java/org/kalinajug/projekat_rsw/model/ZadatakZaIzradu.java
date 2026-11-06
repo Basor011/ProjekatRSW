@@ -16,6 +16,17 @@ public class ZadatakZaIzradu {
     @Setter(AccessLevel.NONE)
     private Long id;
 
+    @Column(nullable = false)
+    private String naziv;
+
+    private String opis;
+
+    @Column(nullable = false)
+    private String zadatakPath;
+
+    @Column(nullable = false)
+    private String originalniNaziv;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Grupa grupa;
 
