@@ -3,6 +3,7 @@ package org.kalinajug.projekat_rsw.utils;
 import org.kalinajug.projekat_rsw.controllers.request.*;
 import org.kalinajug.projekat_rsw.controllers.response.*;
 import org.kalinajug.projekat_rsw.model.*;
+import org.kalinajug.projekat_rsw.services.AuthService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,12 +20,12 @@ public final class Converters {
         entities.forEach(e -> rez.add(converter.apply(e)));
         return rez;
     }
-    /*
-    public static LoginResponse toLoginResponse(Prijava prijava) {
-        return new LoginResponse(prijava.token(), prijava.istice(), prijava.uloga());
+
+    public static LoginResponse toLoginResponse(AuthService.Prijava prijava) {
+        return new LoginResponse(prijava.token(), prijava.istice(),prijava.uloga());
     }
 
-     */
+
 
 
     /// NASTAVNIK
@@ -34,6 +35,7 @@ public final class Converters {
         n.setIme(r.getIme());
         n.setPrezime(r.getPrezime());
         n.setEmail(r.getEmail());
+        n.setLozinka(r.getLozinka());
         return n;
     }
 
@@ -179,7 +181,9 @@ public final class Converters {
         res.setId(g.getId());
         res.setBrojGrupe(g.getBrojGrupe());
         res.setTerminId(g.getTermin() != null ? g.getTermin().getId() : null);
-        res.setZadaciIds(toList(g.getZadaciZaIzradu(), ZadatakZaIzradu::getId));
+        res.setZadaciIds(g.getZadaciZaIzradu() != null
+                ? toList(g.getZadaciZaIzradu(), ZadatakZaIzradu::getId)
+                : new ArrayList<>());
         return res;
     }
 
@@ -192,21 +196,24 @@ public final class Converters {
         return l;
     }
 
-    public static ListaPrijavljenihResponse tolistaPrijavljenihResponse(ListaPrijavljenih l) {
+    public static ListaPrijavljenihResponse toListaPrijavljenihResponse(ListaPrijavljenih l) {
         ListaPrijavljenihResponse res = new ListaPrijavljenihResponse();
         res.setId(l.getListaPrijavljenihid());
-        res.setStudentId(l.getStudent().getId());
-        res.setTerminId(l.getTermin().getId());
+        res.setStudentId(l.getStudent() != null ? l.getStudent().getId() : null);
+        res.setTerminId(l.getTermin() != null ? l.getTermin().getId() : null);
         return res;
     }
 
+    public static List<ListaPrijavljenihResponse> toListaPrijavljenihResponseList(Iterable<ListaPrijavljenih> lista) {
+        return toList(lista, Converters::toListaPrijavljenihResponse);
+    }
 
 
     public static ZadatakZaIzradu toZadatakZaIzradu(ZadatakZaIzraduRequest r, Nastavnik nastavnik, Grupa grupa) {
         ZadatakZaIzradu z = new ZadatakZaIzradu();
         z.setNaziv(r.getNaziv());
         z.setOriginalniNaziv(r.getOriginalniNaziv());
-        z.setOpis(z.getOpis());
+        z.setOpis(r.getOpis());
         z.setZadatakPath(r.getZadatakPath());
         z.setNastavnik(nastavnik);
         z.setGrupa(grupa);

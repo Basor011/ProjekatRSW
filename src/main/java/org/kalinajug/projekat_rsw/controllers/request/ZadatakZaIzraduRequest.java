@@ -21,7 +21,7 @@ public class ZadatakZaIzraduRequest {
     @NotNull
     private Long nastavnikId;
     @NotNull
-    private Long grupaid;
+    private Long grupaId;
     private List<Long> predatiZadaciId;
 
 }

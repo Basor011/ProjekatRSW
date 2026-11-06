@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
     final AuthService authService;
 
-    /*
+
     @PostMapping(path = "/login")
     public LoginResponse login(@RequestBody @Valid LoginRequest request) {
         return Converters.toLoginResponse(authService.login(request.getEmail(), request.getLozinka()));
     }
 
-     */
+
 }

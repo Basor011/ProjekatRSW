@@ -17,15 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ListaPrijavljenihController {
 
-    private final ListaPrijavljenihService listaPrijavljenihService; /// MORA DA SE IZMENI DA SADRZI LISTU A NE ASAMO STUDENTA
+    private final ListaPrijavljenihService listaPrijavljenihService;
 
-    /*
+
     @PostMapping("/add")
-    public ResponseEntity<ListaPrijavljenihResponse> toAddListaPrijavljenih(@RequestBody @Valid ListaPrijavljenihRequest listaPrijavljenihRequest)
-    {
-       // ListaPrijavljenih listaPrijavljenih = listaPrijavljenihService.unesiSpisak(listaPrijavljenihRequest.getTerminId(),listaPrijavljenihRequest.get)
-
+    public ResponseEntity<ListaPrijavljenihService.RezultatUnosa> unesiSpisak(@RequestBody @Valid ListaPrijavljenihRequest request) {
+        ListaPrijavljenihService.RezultatUnosa rezultat = listaPrijavljenihService.unesiSpisak(request.getTerminId(), request.getEmailovi());
+        return ResponseEntity.ok(rezultat);
     }
 
-     */
+
 }
