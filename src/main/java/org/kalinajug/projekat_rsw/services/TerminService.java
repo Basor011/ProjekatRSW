@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.kalinajug.projekat_rsw.exceptions.BadRequestException;
 import org.kalinajug.projekat_rsw.exceptions.ResourceNotFoundException;
 import org.kalinajug.projekat_rsw.model.Rok;
+import org.kalinajug.projekat_rsw.model.Student;
 import org.kalinajug.projekat_rsw.model.Termin;
 import org.kalinajug.projekat_rsw.repositories.RokRepo;
 import org.kalinajug.projekat_rsw.repositories.TerminRepo;
@@ -49,5 +50,8 @@ public class TerminService {
             throw new ResourceNotFoundException("Ne postoji termin sa id " + terminId);
         }
         terminRepo.deleteById(terminId);
+    }
+    public List<Termin> findAll() {
+        return terminRepo.findAllWithListaPrijavljenih();
     }
 }

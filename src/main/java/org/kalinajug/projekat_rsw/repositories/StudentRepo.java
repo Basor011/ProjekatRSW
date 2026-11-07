@@ -11,5 +11,5 @@ import java.util.List;
 public interface StudentRepo extends JpaRepository<Student, Long> {
     List<Student> findByEmailIn(List<String> emails);
     @Query("select s from Student s where s.id= :studentId")
-    List<Student> getStudentByIdById(@Param("nastavnikId")Long studentId);
+    List<Student> getStudentIByIdById(@Param("nastavnikId")Long studentId);
 }

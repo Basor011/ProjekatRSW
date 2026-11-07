@@ -110,7 +110,12 @@ public final class Converters {
         PredmetResponse res = new PredmetResponse();
         res.setId(p.getId());
         res.setNaziv(p.getNaziv());
-        res.setRokoviIds(toList(p.getRokovi(), Rok::getId));
+
+        // Provera da li je lista rokovi null pre mapiranja u IDs
+        res.setRokoviIds(p.getRokovi() != null
+                ? toList(p.getRokovi(), Rok::getId)
+                : new ArrayList<>());
+
         return res;
     }
 

@@ -27,7 +27,7 @@ public class PredmetService {
 
     @Transactional(readOnly = true)
     public List<Predmet> findAll(){
-        return predmetRepo.findAll();
+        return predmetRepo.findAllWithRokovi();
     }
 
     @Transactional
