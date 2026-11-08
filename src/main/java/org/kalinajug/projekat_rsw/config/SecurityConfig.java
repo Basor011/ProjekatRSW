@@ -47,7 +47,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/auth/login", "/error").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/predmet/**", "/api/student/**",
                                 "/api/student/profile/**", "/api/student/webprofile/**").authenticated()
-                        .anyRequest().hasRole("NASTAVNIK") // Automatski traži ROLE_NASTAVNIK iz tokena
+                        .anyRequest().hasRole("NASTAVNIK") // Automatski trazi ROLE_NASTAVNIK iz tokena
                 )
                 .oauth2ResourceServer(o -> o.jwt(Customizer.withDefaults()))
                 .build();
