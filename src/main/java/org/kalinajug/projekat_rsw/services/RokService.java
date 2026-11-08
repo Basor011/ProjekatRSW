@@ -31,7 +31,7 @@ public class RokService {
     @Transactional(readOnly = true)
     public List<Rok> findByPredmetId(Long predmetId){
         if(!predmetRepo.existsById(predmetId)) throw new ResourceNotFoundException("Ne postoji predmet sa id " + predmetId);
-        return rokRepo.findByRokIdWithTermini(predmetId);
+        return rokRepo.findByPredmetIdWithTermini(predmetId);
     }
     @Transactional
     public void deleteById(Long id){

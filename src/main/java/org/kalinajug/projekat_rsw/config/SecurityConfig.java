@@ -44,9 +44,10 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/api/auth/login", "/error").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/predmet/**", "/api/student/**",
-                                "/api/student/profile/**", "/api/student/webprofile/**").authenticated()
+                        .requestMatchers("/error").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/predmet/**").authenticated()
+                        .requestMatchers("/api/preuzimanje/**", "/api/predaja/**", "/api/moja-resenja/**").hasRole("STUDENT")
                         .anyRequest().hasRole("NASTAVNIK") // Automatski trazi ROLE_NASTAVNIK iz tokena
                 )
                 .oauth2ResourceServer(o -> o.jwt(Customizer.withDefaults()))

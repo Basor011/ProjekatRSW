@@ -47,7 +47,7 @@ public class Seeder implements CommandLineRunner {
         if(rokRepo.count()>0) return;
 
         List<Predmet> predmetList= new ArrayList<>();
-        for(int i=0; i <= 5;i++)
+        for(int i=0; i <= 10;i++)
         {
             Predmet p = new Predmet();
             p.setNaziv("predmet " + i);
@@ -92,7 +92,7 @@ public class Seeder implements CommandLineRunner {
         String enkodovanaLozinka = passwordEncoder.encode("lozinka123");
 
         List<Nastavnik> nastavnikList= new ArrayList<>();
-        for(int i=0; i<=5 ;i++)
+        for(int i=0; i<=10 ;i++)
         {
             Nastavnik n = new Nastavnik();
             n.setEmail("nastavnik" + i + "@gmail.com");

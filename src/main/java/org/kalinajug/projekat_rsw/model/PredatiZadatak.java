@@ -3,12 +3,14 @@ package org.kalinajug.projekat_rsw.model;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"student_id", "zadatak_za_izradu_id"}))
 public class PredatiZadatak {

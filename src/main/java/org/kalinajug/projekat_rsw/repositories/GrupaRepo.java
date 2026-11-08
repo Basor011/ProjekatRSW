@@ -17,7 +17,7 @@ public interface GrupaRepo extends JpaRepository<Grupa, Long> {
   List<ZadatakZaIzradu> getZadaciOdGrupe(@Param("grupaId") Long grupaId);
 
     @Query("SELECT DISTINCT g FROM Grupa g LEFT JOIN FETCH g.zadaciZaIzradu WHERE g.termin.id = :terminId")
-    List<Grupa> findByTerminId(Long terminId);
+    List<Grupa> findByTerminId(@Param("terminId")Long terminId);
 
   boolean existsByTerminIdAndBrojGrupe(Long terminId, int brojGrupe);
 }
