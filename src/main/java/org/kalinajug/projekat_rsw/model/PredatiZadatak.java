@@ -19,7 +19,7 @@ public class PredatiZadatak {
     @Setter(AccessLevel.NONE)
     private Long id;
 
-    @OneToMany(mappedBy = "predatiZadatak")
+    @OneToMany(mappedBy = "predatiZadatak", fetch= FetchType.EAGER)
     private List<Komentar> komentari;
 
     private Double poeni;
