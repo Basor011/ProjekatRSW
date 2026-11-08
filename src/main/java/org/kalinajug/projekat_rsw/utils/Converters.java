@@ -3,8 +3,9 @@ package org.kalinajug.projekat_rsw.utils;
 import org.kalinajug.projekat_rsw.controllers.request.*;
 import org.kalinajug.projekat_rsw.controllers.response.*;
 import org.kalinajug.projekat_rsw.model.*;
+import org.kalinajug.projekat_rsw.services.AuthService;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
@@ -14,19 +15,27 @@ public final class Converters {
     private Converters() {}
 
 
-    public static <T, R> List<R> toList(List<T> list, Function<T, R> mapper) {
-        if (list == null) return Collections.emptyList();
-        return list.stream().map(mapper).toList();
+    public static <E, R> List<R> toList(Iterable<E> entities, Function<E, R> converter) {
+        List<R> rez = new ArrayList<>();
+        entities.forEach(e -> rez.add(converter.apply(e)));
+        return rez;
+    }
+
+    public static LoginResponse toLoginResponse(AuthService.Prijava prijava) {
+        return new LoginResponse(prijava.token(), prijava.istice(),prijava.uloga());
     }
 
 
 
-    public static Nastavnik toNastavnik(NastavnikRequest r, String hesiranaLozinka) {
+
+    /// NASTAVNIK
+
+    public static Nastavnik toNastavnik(NastavnikRequest r) {
         Nastavnik n = new Nastavnik();
         n.setIme(r.getIme());
         n.setPrezime(r.getPrezime());
         n.setEmail(r.getEmail());
-        n.setLozinka(hesiranaLozinka);
+        n.setLozinka(r.getLozinka());
         return n;
     }
 
@@ -37,24 +46,27 @@ public final class Converters {
         // lozinka se menja posebnom operacijom u servisu
     }
 
-    public static NastavnikResponse toResponse(Nastavnik n) {
+    public static NastavnikResponse toNastavnikResponse(Nastavnik n) {
         NastavnikResponse res = new NastavnikResponse();
-        res.setId(n.getKorisnikid());
+        res.setId(n.getId());
         res.setIme(n.getIme());
         res.setPrezime(n.getPrezime());
         res.setEmail(n.getEmail());
-        res.setZadaciIds(toList(n.getZadaciZaIzradu(), ZadatakZaIzradu::getZadatakzaIzraduid));
+        res.setZadaciIds(toList(n.getZadaciZaIzradu(), ZadatakZaIzradu::getId));
         return res;
     }
 
+    public static List<NastavnikResponse> toNastavnikResponseList(Iterable<Nastavnik> nastavnikIterable) {
+        return toList(nastavnikIterable, Converters::toNastavnikResponse);
+    }
 
+/// STUDENT 3
 
-    public static Student toStudent(StudentRequest r, String hesiranaLozinka) {
+    public static Student toStudent(StudentRequest r) {
         Student s = new Student();
         s.setIme(r.getIme());
         s.setPrezime(r.getPrezime());
         s.setEmail(r.getEmail());
-        s.setLozinka(hesiranaLozinka);
         s.setBrIndeksa(r.getBrIndeksa());
         s.setSmer(r.getSmer());
         s.setGodinaUpisa(r.getGodinaUpisa());
@@ -70,9 +82,9 @@ public final class Converters {
         s.setGodinaUpisa(r.getGodinaUpisa());
     }
 
-    public static StudentResponse toResponse(Student s) {
+    public static StudentResponse toStudentResponse(Student s) {
         StudentResponse res = new StudentResponse();
-        res.setId(s.getKorisnikid());
+        res.setId(s.getId());
         res.setIme(s.getIme());
         res.setPrezime(s.getPrezime());
         res.setEmail(s.getEmail());
@@ -94,11 +106,16 @@ public final class Converters {
         p.setNaziv(r.getNaziv());
     }
 
-    public static PredmetResponse toResponse(Predmet p) {
+    public static PredmetResponse toPredmetResponse(Predmet p) {
         PredmetResponse res = new PredmetResponse();
-        res.setId(p.getPredmetid());
+        res.setId(p.getId());
         res.setNaziv(p.getNaziv());
-        res.setRokoviIds(toList(p.getRokovi(), Rok::getRokid));
+
+        // Provera da li je lista rokovi null pre mapiranja u IDs
+        res.setRokoviIds(p.getRokovi() != null
+                ? toList(p.getRokovi(), Rok::getId)
+                : new ArrayList<>());
+
         return res;
     }
 
@@ -116,13 +133,13 @@ public final class Converters {
         rok.setTipRoka(r.getTipRoka());
     }
 
-    public static RokResponse toResponse(Rok rok) {
+    public static RokResponse toRokResponse(Rok rok) {
         RokResponse res = new RokResponse();
-        res.setId(rok.getRokid());
+        res.setId(rok.getId());
         res.setNaziv(rok.getNaziv());
         res.setTipRoka(rok.getTipRoka());
-        res.setPredmetId(rok.getPredmet() != null ? rok.getPredmet().getPredmetid() : null);
-        res.setTerminiIds(toList(rok.getTermini(), Termin::getTerminid));
+        res.setPredmetId(rok.getPredmet() != null ? rok.getPredmet().getId() : null);
+        res.setTerminiIds(toList(rok.getTermini(), Termin::getId));
         return res;
     }
 
@@ -141,13 +158,13 @@ public final class Converters {
         t.setKraj(r.getKraj());
     }
 
-    public static TerminResponse toResponse(Termin t) {
+    public static TerminResponse toTerminResponse(Termin t) {
         TerminResponse res = new TerminResponse();
-        res.setId(t.getTerminid());
+        res.setId(t.getId());
         res.setPocetak(t.getPocetak());
         res.setKraj(t.getKraj());
-        res.setRokId(t.getRok() != null ? t.getRok().getRokid() : null);
-        res.setGrupeIds(toList(t.getGrupe(), Grupa::getGroupid));
+        res.setRokId(t.getRok() != null ? t.getRok().getId() : null);
+        res.setGrupeIds(toList(t.getGrupe(), Grupa::getId));
         return res;
     }
 
@@ -164,12 +181,14 @@ public final class Converters {
         g.setBrojGrupe(r.getBrojGrupe());
     }
 
-    public static GrupaResponse toResponse(Grupa g) {
+    public static GrupaResponse toGrupaResponse(Grupa g) {
         GrupaResponse res = new GrupaResponse();
-        res.setId(g.getGroupid());
+        res.setId(g.getId());
         res.setBrojGrupe(g.getBrojGrupe());
-        res.setTerminId(g.getTermin() != null ? g.getTermin().getTerminid() : null);
-        res.setZadaciIds(toList(g.getZadaciZaIzradu(), ZadatakZaIzradu::getZadatakzaIzraduid));
+        res.setTerminId(g.getTermin() != null ? g.getTermin().getId() : null);
+        res.setZadaciIds(g.getZadaciZaIzradu() != null
+                ? toList(g.getZadaciZaIzradu(), ZadatakZaIzradu::getId)
+                : new ArrayList<>());
         return res;
     }
 
@@ -182,28 +201,35 @@ public final class Converters {
         return l;
     }
 
-    public static ListaPrijavljenihResponse toResponse(ListaPrijavljenih l) {
+    public static ListaPrijavljenihResponse toListaPrijavljenihResponse(ListaPrijavljenih l) {
         ListaPrijavljenihResponse res = new ListaPrijavljenihResponse();
         res.setId(l.getListaPrijavljenihid());
-        res.setStudentId(l.getStudent().getKorisnikid());
-        res.setTerminId(l.getTermin().getTerminid());
+        res.setStudentId(l.getStudent() != null ? l.getStudent().getId() : null);
+        res.setTerminId(l.getTermin() != null ? l.getTermin().getId() : null);
         return res;
     }
 
+    public static List<ListaPrijavljenihResponse> toListaPrijavljenihResponseList(Iterable<ListaPrijavljenih> lista) {
+        return toList(lista, Converters::toListaPrijavljenihResponse);
+    }
 
 
     public static ZadatakZaIzradu toZadatakZaIzradu(ZadatakZaIzraduRequest r, Nastavnik nastavnik, Grupa grupa) {
         ZadatakZaIzradu z = new ZadatakZaIzradu();
-        z.setGrupa(grupa);
+        z.setNaziv(r.getNaziv());
+        z.setOriginalniNaziv(r.getOriginalniNaziv());
+        z.setOpis(r.getOpis());
+        z.setZadatakPath(r.getZadatakPath());
         z.setNastavnik(nastavnik);
+        z.setGrupa(grupa);
         return z;
     }
 
-    public static ZadatakZaIzraduResponse toResponse(ZadatakZaIzradu z) {
+    public static ZadatakZaIzraduResponse toZadatakZaIzraduResponse(ZadatakZaIzradu z) {
         ZadatakZaIzraduResponse res = new ZadatakZaIzraduResponse();
-        res.setId(z.getZadatakzaIzraduid());
-        res.setGrupaId(z.getGrupa().getGroupid());
-        res.setNastavnikId(z.getNastavnik().getKorisnikid());
+        res.setId(z.getId());
+        res.setGrupaId(z.getGrupa().getId());
+        res.setNastavnikId(z.getNastavnik().getId());
         return res;
     }
 
@@ -221,13 +247,13 @@ public final class Converters {
         p.setPoeni(r.getPoeni());
     }
 
-    public static PredatiZadatakResponse toResponse(PredatiZadatak p) {
+    public static PredatiZadatakResponse toPredatiZadatakResponse(PredatiZadatak p) {
         PredatiZadatakResponse res = new PredatiZadatakResponse();
-        res.setId(p.getPredatiZadatakid());
+        res.setId(p.getId());
         res.setPoeni(p.getPoeni());
-        res.setStudentId(p.getStudent().getKorisnikid());
-        res.setZadatakZaIzraduId(p.getZadatakZaIzradu().getZadatakzaIzraduid());
-        res.setKomentari(toList(p.getKomentari(), Converters::toResponse));
+        res.setStudentId(p.getStudent().getId());
+        res.setZadatakZaIzraduId(p.getZadatakZaIzradu().getId());
+        res.setKomentari(toList(p.getKomentari(), Converters::toKomentarResponse));
         return res;
     }
 
@@ -238,7 +264,7 @@ public final class Converters {
         k.setPath(r.getPath());
         k.setPocetniRed(r.getPocetniRed());
         k.setKrajnjiRed(r.getKrajnjiRed());
-        k.setKomentar(r.getKomentar());
+        k.setTekst(r.getKomentar());
         k.setPredatiZadatak(predatiZadatak);
         return k;
     }
@@ -247,17 +273,17 @@ public final class Converters {
         k.setPath(r.getPath());
         k.setPocetniRed(r.getPocetniRed());
         k.setKrajnjiRed(r.getKrajnjiRed());
-        k.setKomentar(r.getKomentar());
+        k.setTekst(r.getKomentar());
     }
 
-    public static KomentarResponse toResponse(Komentar k) {
+    public static KomentarResponse toKomentarResponse(Komentar k) {
         KomentarResponse res = new KomentarResponse();
-        res.setId(k.getKomentarid());
+        res.setId(k.getId());
         res.setPath(k.getPath());
         res.setPocetniRed(k.getPocetniRed());
         res.setKrajnjiRed(k.getKrajnjiRed());
-        res.setKomentar(k.getKomentar());
-        res.setPredatiZadatakId(k.getPredatiZadatak().getPredatiZadatakid());
+        res.setKomentar(k.getTekst());
+        res.setPredatiZadatakId(k.getPredatiZadatak().getId());
         return res;
     }
 }

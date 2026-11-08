@@ -16,5 +16,10 @@ public interface RokRepo extends JpaRepository<Rok, Long> {
     @Query("select r from Rok r where r.tipRoka = :tipRoka")
     List<Rok> getRokByTipRoka(@Param("tipRoka") TipRoka tipRoka);
 
+    List<Rok> findByPredmetId(Long predmetId);
+
+    @Query("SELECT DISTINCT r FROM Rok r LEFT JOIN FETCH r.termini WHERE r.id = :id")
+    List<Rok> findByRokIdWithTermini(@Param ("id") Long id);
+    List<Rok> findByTipRoka(TipRoka tipRoka);
 
 }

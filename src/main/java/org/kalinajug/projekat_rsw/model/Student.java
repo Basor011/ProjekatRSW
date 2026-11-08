@@ -21,4 +21,8 @@ public class Student extends Korisnik {
     @OneToMany(mappedBy = "student")
     private List<ListaPrijavljenih> listePrijavljenih;
 
+    @Override
+    public TipKorisnika getTipKorisnika() {
+        return TipKorisnika.STUDENT;
+    }
 }

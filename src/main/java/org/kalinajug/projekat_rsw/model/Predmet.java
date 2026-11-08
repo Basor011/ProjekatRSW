@@ -13,7 +13,7 @@ public class Predmet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
-    private Long predmetid;
+    private Long id;
 
     @Column(nullable = false, unique = true)
     private String naziv;

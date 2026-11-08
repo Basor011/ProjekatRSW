@@ -10,11 +10,12 @@ import java.util.List;
 
 @Data
 @Entity
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"termin_id", "broj_grupe"}))
 public class Grupa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
-    private Long groupid;
+    private Long id;
 
     private int brojGrupe;
 

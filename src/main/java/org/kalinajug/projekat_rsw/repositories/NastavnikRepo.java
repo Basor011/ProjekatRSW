@@ -8,21 +8,24 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface NastavnikRepo extends JpaRepository<Nastavnik, Long> {
 
-    @Query("select n from Nastavnik n where n.korisnikid= :nastavnikId")
-    List<Nastavnik> getNastavnikById(@Param("nastavnikId")Long nastavnikId);
 
-    @Query("select n.zadaciZaIzradu from Nastavnik n where n.korisnikid =:nastavnikId")
-    List<ZadatakZaIzradu> getNastavnikZadaciZaIzradu(@Param("nastavnikId")Long nastavnikId);
+    @Query("SELECT DISTINCT n FROM Nastavnik n LEFT JOIN FETCH n.zadaciZaIzradu WHERE n.id = :id")
+    Optional<Nastavnik> findByIdWithZadaci(@Param("id") Long id);
 
-    @Query("select sp from Nastavnik sp where "
+
+    @Query("SELECT DISTINCT n FROM Nastavnik n LEFT JOIN FETCH n.zadaciZaIzradu")
+    List<Nastavnik> findAllWithZadaci();
+
+
+    @Query("SELECT DISTINCT sp FROM Nastavnik sp LEFT JOIN FETCH sp.zadaciZaIzradu WHERE "
             + "(:ime is null or lower(sp.ime) like lower(concat('%', :ime, '%'))) and "
             + "(:prezime is null or lower(sp.prezime) like lower(concat('%', :prezime, '%')))")
-    List<Nastavnik> findByImeAndPrezime(String ime, String prezime);
+    List<Nastavnik> findByImeAndPrezime(@Param("ime") String ime, @Param("prezime") String prezime);
 
     List<Nastavnik> findByEmailIn(List<String> emails);
-
 }

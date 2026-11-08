@@ -13,5 +13,5 @@ public class PredatiZadatakRequest {
     private Long studentId;
 
     @Min(0)
-    private Integer poeni;
+    private Double poeni;
 }

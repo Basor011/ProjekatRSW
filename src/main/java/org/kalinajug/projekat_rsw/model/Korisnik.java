@@ -12,7 +12,7 @@ public abstract class Korisnik {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
-    private Long korisnikid;
+    private Long id;
 
     private String ime;
     private String prezime;
@@ -22,4 +22,6 @@ public abstract class Korisnik {
 
     @Column(nullable = false)
     private String lozinka;
+
+    public abstract TipKorisnika getTipKorisnika();
 }

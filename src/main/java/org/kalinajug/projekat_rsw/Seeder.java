@@ -1,16 +1,25 @@
 package org.kalinajug.projekat_rsw;
 
 import lombok.RequiredArgsConstructor;
+import org.kalinajug.projekat_rsw.config.StorageProperties;
 import org.kalinajug.projekat_rsw.model.*;
 import org.kalinajug.projekat_rsw.repositories.*;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.cglib.core.Local;
 import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 @Component
 @RequiredArgsConstructor
@@ -30,11 +39,12 @@ public class Seeder implements CommandLineRunner {
     private final PasswordEncoder passwordEncoder;
     private final Environment env;
 
+    private final StorageProperties storageProperties;
 
     @Override
     public void run(String... args) throws Exception {
 
-        if(rokRepo.count()>0) return; //// DODAJ ATRIBUTE U FOROVE
+        if(rokRepo.count()>0) return;
 
         List<Predmet> predmetList= new ArrayList<>();
         for(int i=0; i <= 5;i++)
@@ -55,13 +65,19 @@ public class Seeder implements CommandLineRunner {
         }
 
         List<Termin> terminList = new ArrayList<>();
-        LocalDateTime terminT  = LocalDateTime.now();
+        LocalDateTime sada  = LocalDateTime.now()   ;
         for(int i=0; i < rokList.size();i++)
         {
             Termin t = new Termin();
             t.setRok(rokList.get(i));
-            t.setKraj(terminT.plusDays(i).withHour(9));
-            t.setPocetak(terminT.plusDays(i).withHour(12));
+            if(i == 1 || i == 2){
+                t.setPocetak(sada.minusHours(2));
+                t.setKraj(sada.plusHours(2));
+            }else{
+                LocalDateTime dan = sada.plusDays(i+1);
+                t.setPocetak(dan.plusHours(9));
+                t.setKraj(dan.plusHours(12));
+            }
             terminList.add(terminRepo.save(t));
         }
 
@@ -69,7 +85,7 @@ public class Seeder implements CommandLineRunner {
         for (int i = 1; i < terminList.size(); i++) {
             Grupa gp = new Grupa();
             gp.setBrojGrupe(i+100);
-            gp.setTermin(terminList.get(i-1));
+            gp.setTermin(terminList.get(i));
             gpList.add(grupaRepo.save(gp));
         }
 
@@ -86,15 +102,6 @@ public class Seeder implements CommandLineRunner {
             nastavnikList.add(nastavnikRepo.save(n));
         }
 
-        List<ZadatakZaIzradu> zadatakZaIzraduList= new ArrayList<>();
-        for(int i=0; i < nastavnikList.size() && i < gpList.size();i++)
-        {
-            ZadatakZaIzradu z = new ZadatakZaIzradu();
-            z.setGrupa(gpList.get(i));
-            z.setNastavnik(nastavnikList.get(i));
-            zadatakZaIzraduList.add(zadatakZaIzraduRepo.save(z));
-        }
-
         List<Student> studentList = new ArrayList<>();
         for(int i=0; i<=5 ;i++)
         {
@@ -109,6 +116,20 @@ public class Seeder implements CommandLineRunner {
             studentList.add(studentRepo.save(s));
         }
 
+        List<ZadatakZaIzradu> zadatakZaIzraduList= new ArrayList<>();
+        for(int i=0; i < nastavnikList.size() && i < gpList.size();i++)
+        {
+            ZadatakZaIzradu z = new ZadatakZaIzradu();
+            z.setNaziv("zadatak " + i);
+            z.setOpis("Opis zadatka " + i);
+            z.setGrupa(gpList.get(i));
+            String putanja = napraviZip("zadaci/grupa-" + gpList.get(i).getId(), "zadatak " + i);
+            z.setZadatakPath(putanja);
+            z.setOriginalniNaziv("zadatak " + i + ".zip");
+            z.setNastavnik(nastavnikList.get(i% nastavnikList.size()));
+            zadatakZaIzraduList.add(zadatakZaIzraduRepo.save(z));
+        }
+
         List<ListaPrijavljenih> listePrijavljenih = new ArrayList<>();
         for(int i=0; i<terminList.size() && i < studentList.size();i++)
         {
@@ -119,12 +140,19 @@ public class Seeder implements CommandLineRunner {
         }
 
         List<PredatiZadatak> predatiZadatakList = new ArrayList<>();
-        for(int i=0;i<zadatakZaIzraduList.size() && i < studentList.size();i++)
+        sada = LocalDateTime.now();
+        for(int i=0; i < zadatakZaIzraduList.size() && i < studentList.size(); i++)
         {
             PredatiZadatak p = new PredatiZadatak();
-            p.setPoeni((i + 100) /2);
             p.setStudent(studentList.get(i));
             p.setZadatakZaIzradu(zadatakZaIzraduList.get(i));
+            LocalDateTime preuzeto = sada.minusHours(3).plusMinutes(i);
+            p.setVremePreuzimanja(preuzeto);
+
+            if(i % 2 == 0){
+                p.setVremePredaje(preuzeto.plusMinutes(110 + i));
+                p.setPoeni(40.0 + i);
+            }
             predatiZadatakList.add(predatiZadatakRepo.save(p));
         }
 
@@ -132,12 +160,25 @@ public class Seeder implements CommandLineRunner {
         for(int i=0;i<predatiZadatakList.size();i++)
         {
             Komentar k = new Komentar();
-            k.setKomentar("komentar " + i);
+            k.setTekst("komentar " + i);
             k.setPath("/komentarpath " + i);
             k.setPocetniRed(i);
             k.setKrajnjiRed(i+i);
             k.setPredatiZadatak(predatiZadatakList.get(i));
             komentarList.add(komentarRepo.save(k));
         }
+    }
+    private String napraviZip(String podfolder, String sadrzaj) throws IOException {
+        Path root = Path.of(storageProperties.root()).toAbsolutePath().normalize();
+        Path dir = root.resolve(podfolder);
+        Files.createDirectories(dir);
+        Path zip = dir.resolve("seed-" + System.nanoTime() + ".zip");
+        try (OutputStream os = Files.newOutputStream(zip);
+             ZipOutputStream zos = new ZipOutputStream(os)) {
+            zos.putNextEntry(new ZipEntry("src/Main.java"));
+            zos.write(("// " + sadrzaj + "\npublic class Main {}\n").getBytes(StandardCharsets.UTF_8));
+            zos.closeEntry();
+        }
+        return root.relativize(zip).toString();
     }
 }
