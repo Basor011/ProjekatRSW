@@ -32,7 +32,7 @@ public class ListaPrijavljenihService {
 
         List<String> distinct = emailovi.stream().map(String::trim).map(String::toLowerCase).distinct().toList();
 
-        Map<String, Student> studenti = studentRepo.findByEmailIn(distinct).stream().collect(Collectors.toMap(s -> s.getEmail().toLowerCase(), Function.identity(), (a, b) -> a));
+        Map<String, Student> studenti = studentRepo.findByEmailInIgnoreCase(distinct).stream().collect(Collectors.toMap(s -> s.getEmail().toLowerCase(), Function.identity(), (a, b) -> a));
 
         List<String> nepronadjeni = distinct.stream().filter(e -> !studenti.containsKey(e)).toList();
 

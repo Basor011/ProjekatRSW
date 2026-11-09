@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
-public class PreuzimanjeService {
+public class StudentPreuzimanjeService {
 
     private final ZadatakZaIzraduRepo zadatakZaIzraduRepo;
     private final ListaPrijavljenihRepo listaPrijavljenihRepo;
@@ -30,7 +30,8 @@ public class PreuzimanjeService {
 
     @Transactional
     public Preuzimanje preuzmi(Long studentId, Long terminId, Integer brGrupe) {
-        ZadatakZaIzradu zadatak = zadatakZaIzraduRepo.findByGrupaTerminIdAndGrupaBrojGrupe(terminId, brGrupe).orElseThrow(()-> new ResourceNotFoundException("ne postoji zadatak sa id " + studentId));
+        ZadatakZaIzradu zadatak = zadatakZaIzraduRepo.findByGrupaTerminIdAndGrupaBrojGrupe(terminId, brGrupe).orElseThrow(()->
+                new ResourceNotFoundException("ne postoji zadatak sa terminom " + terminId + " i grupom  "+brGrupe ));
 
         Termin termin = zadatak.getGrupa().getTermin();
         LocalDateTime sada = LocalDateTime.now();

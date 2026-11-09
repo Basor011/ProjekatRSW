@@ -61,4 +61,9 @@ public class FileStorageService {
             Files.deleteIfExists(root.resolve(relativnaPutanja).normalize());
         }catch(IOException e){}
     }
+    public Path resolve(String relPath){
+        Path p = root.resolve(relPath).normalize();
+        if(!p.startsWith(root)) throw new BadRequestException("Fajl ne postoji.");
+        return p;
+    }
 }

@@ -17,7 +17,7 @@ public final class Converters {
 
     public static <E, R> List<R> toList(Iterable<E> entities, Function<E, R> converter) {
         List<R> rez = new ArrayList<>();
-        entities.forEach(e -> rez.add(converter.apply(e)));
+        if (entities != null) entities.forEach(e -> rez.add(converter.apply(e)));
         return rez;
     }
 

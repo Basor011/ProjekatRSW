@@ -5,8 +5,10 @@ import org.kalinajug.projekat_rsw.exceptions.BadRequestException;
 import org.kalinajug.projekat_rsw.exceptions.ResourceNotFoundException;
 import org.kalinajug.projekat_rsw.model.Komentar;
 import org.kalinajug.projekat_rsw.model.PredatiZadatak;
+import org.kalinajug.projekat_rsw.model.ZadatakZaIzradu;
 import org.kalinajug.projekat_rsw.repositories.KomentarRepo;
 import org.kalinajug.projekat_rsw.repositories.PredatiZadatakRepo;
+import org.kalinajug.projekat_rsw.repositories.ZadatakZaIzraduRepo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +19,9 @@ import java.util.List;
 public class OcenjivanjeService {
     private final KomentarRepo komentarRepo;
     private final PredatiZadatakRepo predatiZadatakRepo;
+    private final ZadatakZaIzraduRepo zadatakZaIzraduRepo;
+
+    public record MojRezultat(Double poeni, List<Komentar> komenari){}
 
     @Transactional
     public Komentar saveKomentar(Long predatiId, String path, Integer pocetniRed, Integer krajnjiRed, String tekst) {
@@ -43,6 +48,7 @@ public class OcenjivanjeService {
             throw new BadRequestException("Poeni ne mogu biti negativni");
         }
         PredatiZadatak predati = predatiZadatakRepo.findById(predatiId).orElseThrow(()-> new ResourceNotFoundException("Predati zadatak sa id " + predatiId + " ne postoji."));
+        if (predati.getVremePredaje() == null) throw new BadRequestException("Student nije predao resenje!");
         predati.setPoeni(poeni);
         return predatiZadatakRepo.save(predati);
     }
@@ -66,5 +72,20 @@ public class OcenjivanjeService {
         if (!komentarRepo.existsById(komentarId))
             throw new ResourceNotFoundException("Komentar ne postoji");
         komentarRepo.deleteById(komentarId);
+    }
+
+    @Transactional(readOnly = true)
+    public MojRezultat mojRezultat(Long studentId, Long terminId, Integer brojGrupe) {
+        ZadatakZaIzradu z = zadatakZaIzraduRepo.findByGrupaTerminIdAndGrupaBrojGrupe(terminId, brojGrupe)
+                .orElseThrow(() -> new ResourceNotFoundException("Zadatak ne postoji"));
+        PredatiZadatak p = predatiZadatakRepo.findByStudentIdAndZadatakZaIzraduId(studentId, z.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Resenje ne postoji"));
+        return new MojRezultat(p.getPoeni(), komentarRepo.findByPredatiZadatakId(p.getId()));
+    }
+
+    @Transactional(readOnly = true)
+    public PredatiZadatak findMoje(Long predatiId, Long studentId) {
+        return predatiZadatakRepo.findByIdAndStudentId(predatiId, studentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Resenje ne postoji"));
     }
 }

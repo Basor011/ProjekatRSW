@@ -3,10 +3,12 @@ package org.kalinajug.projekat_rsw.model;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Getter;
 import lombok.Setter;
 
 @Inheritance(strategy = InheritanceType.JOINED)
-@Data
+@Getter
+@Setter
 @Entity
 public abstract class Korisnik {
     @Id
