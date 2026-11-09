@@ -34,9 +34,10 @@ public class NastavnikController {
         return Converters.toNastavnikResponseList(nastavnikService.findAll());
     }
 
-    @GetMapping(path = "/{id}")
-    public NastavnikResponse getNastavnikById(@PathVariable Long id) {
-        return nastavnikService.findById(id).map(Converters::toNastavnikResponse).orElse(null);
+    @GetMapping("/{id}")
+    public ResponseEntity<NastavnikResponse> getNastavnik(@PathVariable Long id) {
+        Nastavnik nastavnik = nastavnikService.findById(id);
+        return ResponseEntity.ok(Converters.toNastavnikResponse(nastavnik));
     }
 
     @GetMapping(path = "/search")

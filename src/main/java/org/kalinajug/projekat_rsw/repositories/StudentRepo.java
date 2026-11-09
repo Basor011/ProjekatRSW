@@ -7,10 +7,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface StudentRepo extends JpaRepository<Student, Long> {
     @Query("select s from Student s where lower(s.email) in :emails")
     List<Student> findByEmailInIgnoreCase(@Param("emails") List<String> emails);
-    @Query("select s from Student s where s.id= :studentId")
-    List<Student> getStudentIByIdById(@Param("studentId")Long studentId);
+
+
+    @Query("select s from Student s where s.id = :studentId")
+    Optional<Student> findByIdOptional(@Param("studentId") Long studentId);
 }

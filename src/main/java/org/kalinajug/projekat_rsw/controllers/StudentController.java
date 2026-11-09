@@ -41,8 +41,9 @@ public class StudentController {
     }
 
     @GetMapping(path="/podaci/{id}")
-    public StudentResponse getStudentPodaci(@PathVariable Long id){
-        return studentService.findById(id).map(Converters::toStudentResponse).orElse(null);
+    public ResponseEntity<StudentResponse> getStudentPodaci(@PathVariable Long id){
+        Student student = studentService.findById(id);
+        return ResponseEntity.ok(Converters.toStudentResponse(student));
     }
 
 }

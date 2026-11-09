@@ -2,6 +2,7 @@ package org.kalinajug.projekat_rsw.services;
 
 
 import lombok.RequiredArgsConstructor;
+import org.kalinajug.projekat_rsw.exceptions.ResourceNotFoundException;
 import org.kalinajug.projekat_rsw.model.Nastavnik;
 import org.kalinajug.projekat_rsw.repositories.NastavnikRepo;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class NastavnikService {
 
-    final NastavnikRepo nastavnikRepository;
+    private final NastavnikRepo nastavnikRepository;
 
     public Nastavnik save(Nastavnik nastavnik) {
         return nastavnikRepository.save(nastavnik);
@@ -26,8 +27,9 @@ public class NastavnikService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<Nastavnik> findById(Long id) {
-        return nastavnikRepository.findByIdWithZadaci(id);
+    public Nastavnik findById(Long id) {
+        return nastavnikRepository.findByIdWithZadaci(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Ne postoji nastavnik sa id: " + id));
     }
 
     @Transactional(readOnly = true)
