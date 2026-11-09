@@ -82,4 +82,10 @@ public class OcenjivanjeService {
                 .orElseThrow(() -> new ResourceNotFoundException("Resenje ne postoji"));
         return new MojRezultat(p.getPoeni(), komentarRepo.findByPredatiZadatakId(p.getId()));
     }
+
+    @Transactional(readOnly = true)
+    public PredatiZadatak findMoje(Long predatiId, Long studentId) {
+        return predatiZadatakRepo.findByIdAndStudentId(predatiId, studentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Resenje ne postoji"));
+    }
 }

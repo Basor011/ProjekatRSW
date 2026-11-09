@@ -30,7 +30,8 @@ public class StudentPreuzimanjeService {
 
     @Transactional
     public Preuzimanje preuzmi(Long studentId, Long terminId, Integer brGrupe) {
-        ZadatakZaIzradu zadatak = zadatakZaIzraduRepo.findByGrupaTerminIdAndGrupaBrojGrupe(terminId, brGrupe).orElseThrow(()-> new ResourceNotFoundException("ne postoji zadatak sa id " + studentId));
+        ZadatakZaIzradu zadatak = zadatakZaIzraduRepo.findByGrupaTerminIdAndGrupaBrojGrupe(terminId, brGrupe).orElseThrow(()->
+                new ResourceNotFoundException("ne postoji zadatak sa terminom " + terminId + " i grupom  "+brGrupe ));
 
         Termin termin = zadatak.getGrupa().getTermin();
         LocalDateTime sada = LocalDateTime.now();

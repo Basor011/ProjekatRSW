@@ -9,7 +9,8 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface StudentRepo extends JpaRepository<Student, Long> {
-    List<Student> findByEmailIn(List<String> emails);
+    @Query("select s from Student s where lower(s.email) in :emails")
+    List<Student> findByEmailInIgnoreCase(@Param("emails") List<String> emails);
     @Query("select s from Student s where s.id= :studentId")
-    List<Student> getStudentIByIdById(@Param("nastavnikId")Long studentId);
+    List<Student> getStudentIByIdById(@Param("studentId")Long studentId);
 }
