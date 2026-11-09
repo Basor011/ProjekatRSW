@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
-public class PreuzimanjeService {
+public class StudentPreuzimanjeService {
 
     private final ZadatakZaIzraduRepo zadatakZaIzraduRepo;
     private final ListaPrijavljenihRepo listaPrijavljenihRepo;

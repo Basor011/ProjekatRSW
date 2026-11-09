@@ -51,5 +51,6 @@ public class ZadatakZaIzraduService {
         if (predatiZadatakRepo.existsByZadatakZaIzraduId(id))
             throw new ConflictException("Zadatak " + id + " ima predata resenja");
         zadatakRepo.deleteById(id);
+        //fileStorageService.delete();
     }
 }
