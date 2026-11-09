@@ -2,8 +2,9 @@ package org.kalinajug.projekat_rsw.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.kalinajug.projekat_rsw.services.AuthService;
-import org.kalinajug.projekat_rsw.services.PreuzimanjeService;
-import org.kalinajug.projekat_rsw.services.PreuzimanjeService.Preuzimanje;
+
+
+import org.kalinajug.projekat_rsw.services.StudentPreuzimanjeService;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -17,14 +18,14 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class PreuzimanjeController {
 
-    private final PreuzimanjeService preuzimanjeService;
+    private final StudentPreuzimanjeService preuzimanjeService;
 
     @GetMapping
     public ResponseEntity<Resource> preuzmiZadatak(@AuthenticationPrincipal Jwt jwt,
                                                    @RequestParam Long terminId, @RequestParam Integer brGrupe)
     {
         Long studentId = ((Number) jwt.getClaim(AuthService.CLAIM_KORISNIK_ID)).longValue();
-        Preuzimanje rezultat = preuzimanjeService.preuzmi(studentId, terminId, brGrupe);
+        StudentPreuzimanjeService.Preuzimanje rezultat = preuzimanjeService.preuzmi(studentId, terminId, brGrupe);
 
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
