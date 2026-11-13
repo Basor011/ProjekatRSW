@@ -63,5 +63,12 @@ public class ProfesorPreuzimanjeService {
         var s = p.getStudent();
         return new ResenjeStudenta(p.getId(), s.getId(), p.getZadatakZaIzradu().getGrupa().getBrojGrupe(), s.getIme(), s.getPrezime(), s.getBrIndeksa(), p.getVremePredaje(), p.getPoeni(), p.getResenjePath());
     }
+    @Transactional(readOnly = true)
+    public ResenjeStudenta nadjiJedno(Long predatiId) {
+        PredatiZadatak p = predatiZadatakRepo.findById(predatiId)
+                .orElseThrow(() -> new ResourceNotFoundException("Predati zadatak sa id " + predatiId + " ne postoji"));
+        if (p.getResenjePath() == null) throw new ResourceNotFoundException("Student nije predao resenje");
+        return mapiraj(p);
+    }
 }
 
